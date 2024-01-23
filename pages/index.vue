@@ -2,13 +2,13 @@
   <header>
     <div class="top">
       <h1>IP Address Tracker</h1>
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="ipStore.search(searchValue)">
         <div class="p-input-icon-right search-input-container">
-          <InputText class="search-input" v-model="searchValue" size="large" placeholder="Search for any IP address or domain" />
+          <InputText class="search-input" v-model="searchValue" size="large" placeholder="Search for any IP address" />
           <button type="submit" class="pi pi-angle-right search-input-icon-button"></button>
         </div>
         <div class="absolute-card">
-          <div class="card-content" v-for="item in infoItems" :key="item">
+          <div class="card-content" v-for="(item, index) in ipStore.infoItems" :key="index">
             <h1 class="title"> {{ item.title }} </h1>
             <p class="content"> {{ item.content }} </p>
           </div>
@@ -17,38 +17,18 @@
     </div>
   </header>
   <section>
-    <img src="~/assets/images/map.png" alt="Mapa"/>
+    <LeafletMap />
   </section>
 </template>
 
 <script setup>
 import '~/assets/css/main.css'
 import { ref } from 'vue';
+import LeafletMap from "~/components/LeafletMap.vue";
+import { useIpAddressStore } from "~/stores/ipAddress.ts";
 
-const searchValue = ref(null);
-
-const handleSubmit = () => {
-  console.log('Form submitted with value:', searchValue.value);
-};
-
-const infoItems = [
-  {
-    title: 'IP ADDRESS',
-    content: '192.212.174.101'
-  },
-  {
-    title: 'LOCATION',
-    content: 'Brooklyn, NY 1001'
-  },
-  {
-    title: 'TIMEZONE',
-    content: 'UTC - 05:00'
-  },
-  {
-    title: 'ISP',
-    content: 'SpaceX Starlink'
-  },
-]
+const ipStore = useIpAddressStore()
+const searchValue = ref(null)
 </script>
 
 <style scoped>
@@ -103,6 +83,11 @@ header h1 {
   background-color: #9f4adc;
 }
 
+section {
+  position: relative;
+  z-index: 1;
+}
+
 .absolute-card {
   display: flex;
   justify-content: space-around;
@@ -132,9 +117,5 @@ header h1 {
   font-size: 25px;
   font-weight: 500;
   letter-spacing: 0.75px;
-}
-
-section img {
-  width: 100%;
 }
 </style>
