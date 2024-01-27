@@ -51,12 +51,36 @@ header {
   background-repeat: no-repeat;
   width: 100%;
   height: 30vh;
+
+  @media (max-width: 1264px) {
+    height: 20vh;
+  }
+
+  @media (max-width: 910px) {
+    height: 15vh;
+  }
+
+  @media (max-width: 706px) {
+    height: 15vh;
+  }
 }
 
 header h1 {
   color: white;
   font-size: 40px;
   font-weight: 500;
+
+  @media (max-width: 1264px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 910px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 706px) {
+    font-size: 10px;
+  }
 }
 
 .top {
@@ -70,12 +94,39 @@ header h1 {
   display: flex;
   align-items: center;
   height: 70px;
+
+  @media (max-width: 1264px) {
+    height: 50px
+  }
+
+  @media (max-width: 910px) {
+    height: 30px
+  }
 }
 
 .search-input {
+  outline: none;
+  border: none;
   width: 686px;
   height: 100%;
   border-radius: 15px 0 0 15px;
+
+  @media (max-width: 1264px) {
+    border-radius: 10px 0 0 10px;
+    font-size: 15px;
+    width: 500px;
+  }
+
+  @media (max-width: 910px) {
+    border-radius: 5px 0 0 5px;
+    font-size: 10px;
+    width: 400px;
+  }
+
+  @media (max-width: 706px) {
+    height: 20px;
+    width: 300px;
+  }
 }
 
 .search-input-icon-button {
@@ -88,6 +139,17 @@ header h1 {
   background: #7536A2;
   cursor: pointer;
   transition: 0.3s;
+
+  @media (max-width: 1264px) {
+    border-radius: 0 10px 10px 0;
+    width: 50px;
+    font-size: 15px;
+  }
+
+  @media (max-width: 910px) {
+    border-radius: 0 5px 5px 0;
+    width: 30px;
+  }
 }
 
 .search-input-icon-button:hover {
@@ -115,6 +177,29 @@ section {
   border-radius: 15px;
   background: white;
   box-shadow: 0 2px 13px 0 #7536A2;
+
+  @media (max-width: 1264px) {
+    height: 100px;
+    width: 800px;
+    padding: 10px;
+    top: 70%;
+  }
+
+  @media (max-width: 910px) {
+    height: 80px;
+    width: 600px;
+    top: 80%;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 706px) {
+    flex-direction: column;
+    width: 200px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    top: 30%;
+  }
 }
 
 .title {
@@ -122,6 +207,15 @@ section {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.42px;
+
+  @media (max-width: 1264px) {
+    font-size: 10px;
+  }
+
+  @media (max-width: 706px) {
+    font-size: 7px;
+    text-align: center;
+  }
 }
 
 .content {
@@ -129,6 +223,18 @@ section {
   font-size: 25px;
   font-weight: 500;
   letter-spacing: 0.75px;
+
+  @media (max-width: 1264px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 910px) {
+    font-size: 10px;
+  }
+
+  @media (max-width: 706px) {
+    font-size: 7px;
+  }
 }
 
 .overlay {
@@ -149,3 +255,4 @@ section {
   z-index: 1000;
 }
 </style>
+

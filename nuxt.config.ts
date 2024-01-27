@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     primevue: {
         /* Options */
     },
-    css: ['primevue/resources/themes/lara-light-green/theme.css'],
+    css: ['primevue/resources/themes/lara-light-purple/theme.css'],
     runtimeConfig: {
         public: {
             API_KEY_IP: process.env.API_KEY_IP,
