@@ -2,13 +2,13 @@
   <header>
     <div class="top">
       <h1>IP Address Tracker</h1>
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="ipStore.search(searchValue)">
         <div class="p-input-icon-right search-input-container">
-          <InputText class="search-input" v-model="searchValue" size="large" placeholder="Search for any IP address or domain" />
+          <InputText class="search-input" v-model="searchValue" size="large" placeholder="Search for any IP address" />
           <button type="submit" class="pi pi-angle-right search-input-icon-button"></button>
         </div>
-        <div class="absolute-card">
-          <div class="card-content" v-for="item in infoItems" :key="item">
+        <div class="absolute-card" v-if="!ipStore.isLoading">
+          <div class="card-content" v-for="(item, index) in ipStore.infoItems" :key="index">
             <h1 class="title"> {{ item.title }} </h1>
             <p class="content"> {{ item.content }} </p>
           </div>
@@ -16,39 +16,31 @@
       </form>
     </div>
   </header>
-  <section>
-    <img src="~/assets/images/map.png" alt="Mapa"/>
+  <section v-if="!ipStore.isLoading">
+    <LeafletMap />
   </section>
+  <div v-if="ipStore.isLoading" class="overlay"></div>
+  <ProgressSpinner v-if="ipStore.isLoading" class="loading-spinner" animationDuration=".5s" />
 </template>
 
 <script setup>
 import '~/assets/css/main.css'
 import { ref } from 'vue';
+import LeafletMap from "~/components/LeafletMap.vue";
+import { useIpAddressStore } from "~/stores/ipAddress.ts";
+import axios from "axios";
 
-const searchValue = ref(null);
+const ipStore = useIpAddressStore()
+const searchValue = ref(null)
 
-const handleSubmit = () => {
-  console.log('Form submitted with value:', searchValue.value);
-};
-
-const infoItems = [
-  {
-    title: 'IP ADDRESS',
-    content: '192.212.174.101'
-  },
-  {
-    title: 'LOCATION',
-    content: 'Brooklyn, NY 1001'
-  },
-  {
-    title: 'TIMEZONE',
-    content: 'UTC - 05:00'
-  },
-  {
-    title: 'ISP',
-    content: 'SpaceX Starlink'
-  },
-]
+onMounted(async() => {
+  try {
+    const response = await axios.get('https://api.ipify.org?format=json')
+    await ipStore.search(response.data.ip)
+  } catch (error) {
+    console.error('Não foi possível obter o IP', error)
+  }
+})
 </script>
 
 <style scoped>
@@ -103,6 +95,11 @@ header h1 {
   background-color: #9f4adc;
 }
 
+section {
+  position: relative;
+  z-index: 1;
+}
+
 .absolute-card {
   display: flex;
   justify-content: space-around;
@@ -134,7 +131,21 @@ header h1 {
   letter-spacing: 0.75px;
 }
 
-section img {
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 </style>
