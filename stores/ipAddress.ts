@@ -3,7 +3,7 @@ import axios from "axios";
 import { useGeocondingStore } from "~/stores/geoconding.ts";
 
 export const useIpAddressStore = defineStore('ipAddress', {
-    state: () => ({ ip: '', location: '', timezone: '', isp: '', infoItems: [{title: 'IP ADDRESS', content: ''},{title: 'LOCATION', content: ''},{title: 'TIMEZONE', content: ''},{title: 'ISP', content: ''}] }),
+    state: () => ({isLoading: true, ip: '', location: '', timezone: '', isp: '', infoItems: [{title: 'IP ADDRESS', content: ''},{title: 'LOCATION', content: ''},{title: 'TIMEZONE', content: ''},{title: 'ISP', content: ''}] }),
     actions: {
         async search(value): Promise<void> {
             const api = axios.create({
@@ -26,8 +26,10 @@ export const useIpAddressStore = defineStore('ipAddress', {
                 this.infoItems[2].content = data.location.timezone;
                 this.infoItems[3].content = data.isp;
                 await geoStore.changeLocation();
+                this.isLoading = false;
             } catch (error) {
                 console.error(error)
+                this.isLoading = false;
             }
         }
     },

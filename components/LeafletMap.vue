@@ -1,6 +1,5 @@
 <template>
   <div class="map">
-    {{geoStore.location}}
     <LMap
         ref="map"
         :zoom="zoom"
@@ -13,15 +12,22 @@
           layer-type="base"
           name="OpenStreetMap"
       />
+
+      <LMarker :lat-lng="geoStore.location" />
     </LMap>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useGeocondingStore } from "~/stores/geoconding.ts";
-const zoom = ref(6)
+import { useGeocondingStore } from '~/stores/geoconding.ts';
+
+const zoom = ref(15)
 const geoStore = useGeocondingStore()
+
+onMounted( () => {
+  geoStore.changeLocation()
+})
 </script>
 
 <style scoped>
