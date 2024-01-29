@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useGeocondingStore } from "~/stores/geoconding.ts";
+import Swal from 'sweetalert2'
 
 export const useIpAddressStore = defineStore('ipAddress', {
     state: () => ({isLoading: true, ip: '', location: '', timezone: '', isp: '', infoItems: [{title: 'IP ADDRESS', content: ''},{title: 'LOCATION', content: ''},{title: 'TIMEZONE', content: ''},{title: 'ISP', content: ''}] }),
@@ -15,7 +16,6 @@ export const useIpAddressStore = defineStore('ipAddress', {
 
             try {
                 const { data } = await api.get(`?apiKey=${apiKey}&ipAddress=${value}`);
-                console.log('ip address ',data)
 
                 this.location = data.location;
                 this.timezone = data.location.timezone;
@@ -30,6 +30,11 @@ export const useIpAddressStore = defineStore('ipAddress', {
                 this.isLoading = false;
             } catch (error) {
                 console.error(error)
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Invalid IP, please try another address",
+                });
                 this.isLoading = false;
             }
         }
