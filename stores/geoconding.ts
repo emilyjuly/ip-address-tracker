@@ -15,6 +15,7 @@ export const useGeocondingStore = defineStore('geoconding', {
 
             try {
                 const { data } = await api.get(`search?text=${ipStore.location.region},${ipStore.location.country}&apiKey=${apiKey}`)
+                console.log('geocoding', data)
                 const reserveLocation = (data.features[0].geometry.coordinates)
                 this.location.push(reserveLocation[1])
                 this.location.push(reserveLocation[0])
