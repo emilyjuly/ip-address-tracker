@@ -13,7 +13,10 @@
           name="OpenStreetMap"
       />
 
-      <LMarker :lat-lng="geoStore.location" />
+      <LMarker :lat-lng="geoStore.location">
+        <LIcon :icon-url="'/favicon.ico'" :icon-size="iconSize"/>
+      </LMarker>
+
     </LMap>
   </div>
 </template>
@@ -24,6 +27,7 @@ import { useGeocondingStore } from '~/stores/geoconding.ts';
 
 const zoom = ref(15)
 const geoStore = useGeocondingStore()
+const iconSize = [60, 60]
 
 onMounted( () => {
   geoStore.changeLocation()

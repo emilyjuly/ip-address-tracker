@@ -110,6 +110,8 @@ header h1 {
   width: 686px;
   height: 100%;
   border-radius: 15px 0 0 15px;
+  font-size: 20px;
+  padding: 15px;
 
   @media (max-width: 1264px) {
     border-radius: 10px 0 0 10px;
@@ -167,13 +169,13 @@ section {
   justify-content: space-around;
   padding: 30px;
   position: absolute;
-  top: 60%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, 50%);
   margin-top: -50px;
   z-index: 2;
   width: 1161px;
-  height: 169px;
+  height: 130px;
   border-radius: 15px;
   background: white;
   box-shadow: 0 2px 13px 0 #7536A2;

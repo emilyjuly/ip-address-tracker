@@ -15,6 +15,7 @@ export const useIpAddressStore = defineStore('ipAddress', {
 
             try {
                 const { data } = await api.get(`?apiKey=${apiKey}&ipAddress=${value}`);
+                console.log('ip address ',data)
 
                 this.location = data.location;
                 this.timezone = data.location.timezone;
