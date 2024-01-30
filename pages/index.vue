@@ -1,14 +1,16 @@
 <template>
   <header>
     <div class="top">
-      <h1>IP Address Tracker</h1>
+      <div class="header">
+        <h1>IP Address Tracker</h1>
+      </div>
       <form @submit.prevent="ipStore.search(searchValue)">
         <div class="p-input-icon-right search-input-container">
-          <InputText class="search-input" v-model="searchValue" size="large" placeholder="Search for any IP address" />
-          <button type="submit" class="pi pi-angle-right search-input-icon-button"></button>
+          <InputText v-model="searchValue" class="search-input" placeholder="Search for any IP address" size="large"/>
+          <button class="pi pi-angle-right search-input-icon-button" type="submit"></button>
         </div>
-        <div class="absolute-card" v-if="!ipStore.isLoading">
-          <div class="card-content" v-for="(item, index) in ipStore.infoItems" :key="index">
+        <div v-if="!ipStore.isLoading" class="absolute-card">
+          <div v-for="(item, index) in ipStore.infoItems" :key="index" class="card-content">
             <h1 class="title"> {{ item.title }} </h1>
             <p class="content"> {{ item.content }} </p>
           </div>
@@ -17,28 +19,30 @@
     </div>
   </header>
   <section v-if="!ipStore.isLoading">
-    <LeafletMap />
+    <LeafletMap/>
   </section>
-  <div v-if="ipStore.isLoading" class="overlay"></div>
-  <ProgressSpinner v-if="ipStore.isLoading" class="loading-spinner" animationDuration=".5s" />
+  <div v-if="ipStore.isLoading" class="overlay">
+    <span class="loading-spinner">Loading...</span>
+  </div>
 </template>
 
 <script setup>
-import '~/assets/css/main.css'
-import { ref } from 'vue';
-import LeafletMap from "~/components/LeafletMap.vue";
-import { useIpAddressStore } from "~/stores/ipAddress.ts";
-import axios from "axios";
+import '~/assets/css/main.css';
+import {ref} from 'vue';
+import LeafletMap from '~/components/LeafletMap.vue';
+import {useIpAddressStore} from '~/stores/ipAddress.ts';
+import axios from 'axios';
 
 const ipStore = useIpAddressStore()
 const searchValue = ref(null)
+const checked = ref(false)
 
-onMounted(async() => {
+onMounted(async () => {
   try {
     const response = await axios.get('https://api.ipify.org?format=json')
     await ipStore.search(response.data.ip)
   } catch (error) {
-    console.error('Não foi possível obter o IP', error)
+    console.error(error)
   }
 })
 </script>
@@ -250,6 +254,9 @@ section {
 }
 
 .loading-spinner {
+  color: white;
+  font-size: 20px;
+  letter-spacing: 0.5rem;
   position: fixed;
   top: 50%;
   left: 50%;

@@ -1,25 +1,33 @@
-import { defineStore } from "pinia";
-import axios from "axios";
-import { useIpAddressStore } from "~/stores/ipAddress.ts";
+import {defineStore} from 'pinia';
+import {fetchGeocodingData} from '~/services/geocoding';
+import {useIpAddressStore} from '~/stores/ipAddress.ts';
+import type {AxiosResponse} from "axios";
 
 export const useGeocondingStore = defineStore('geoconding', {
-    state: () => ({location: []}),
+    state: () => ({
+        location: []
+    }),
     actions: {
-        async changeLocation() {
+        async changeLocation(): Promise<void> {
             this.location = []
-            const api = axios.create({
-                baseURL: 'https://api.geoapify.com/v1/geocode/'
-            })
             const apiKey = useRuntimeConfig().public.API_KEY_GEO;
-            const ipStore = useIpAddressStore()
+            const ipStore = useIpAddressStore();
 
             try {
-                const { data } = await api.get(`search?text=${ipStore.location.region},${ipStore.location.country}&apiKey=${apiKey}`)
-                const reserveLocation = (data.features[0].geometry.coordinates)
-                this.location.push(reserveLocation[1])
-                this.location.push(reserveLocation[0])
-            } catch (error) {
-                console.error(error)
+                const result: AxiosResponse = await fetchGeocodingData(apiKey, ipStore.location);
+
+                if (result) {
+                    const reverseLocation = (result.features[0].geometry.coordinates)
+                    this.location.push(reverseLocation[1])
+                    this.location.push(reverseLocation[0])
+                }
+
+            } catch {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Invalid IP, please try another address",
+                });
             }
         }
     }
