@@ -1,40 +1,29 @@
 <template>
-  <header>
-    <div class="top">
+  <header class="bg-cover bg-no-repeat relative">
+    <div class="flex flex-column align-items-center	justify-content-center">
       <div class="header">
-        <h1>IP Address Tracker</h1>
+        <h1 class="text-white font-medium text-3xl">IP Address Tracker</h1>
       </div>
-      <form @submit.prevent="ipStore.search(searchValue)">
-        <div class="p-input-icon-right search-input-container">
-          <InputText v-model="searchValue" class="search-input" placeholder="Search for any IP address" size="large"/>
-          <button class="pi pi-angle-right search-input-icon-button" type="submit"></button>
-        </div>
-        <div v-if="!ipStore.isLoading" class="absolute-card">
-          <div v-for="(item, index) in ipStore.infoItems" :key="index" class="card-content">
-            <h1 class="title"> {{ item.title }} </h1>
-            <p class="content"> {{ item.content }} </p>
-          </div>
-        </div>
-      </form>
+      <InputSearch/>
     </div>
   </header>
-  <section v-if="!ipStore.isLoading">
+  <section v-if="!ipStore.isLoading" class="relative z-1">
     <LeafletMap/>
   </section>
-  <div v-if="ipStore.isLoading" class="overlay">
-    <span class="loading-spinner">Loading...</span>
+  <div v-if="ipStore.isLoading" class="overlay fixed h-full w-full">
+    <span class="loading-spinner text-white text-md fixed">Loading...</span>
   </div>
 </template>
 
 <script setup>
 import '~/assets/css/main.css';
 import {ref} from 'vue';
-import LeafletMap from '~/components/LeafletMap.vue';
+import LeafletMap from '~/components/map/LeafletMap.vue';
 import {useIpAddressStore} from '~/stores/ipAddress.ts';
 import axios from 'axios';
+import InputSearch from '~/components/inputs/InputSearch.vue';
 
 const ipStore = useIpAddressStore()
-const searchValue = ref(null)
 const checked = ref(false)
 
 onMounted(async () => {
@@ -49,11 +38,7 @@ onMounted(async () => {
 
 <style scoped>
 header {
-  position: relative;
   background-image: url('../assets/images/bg-image.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  width: 100%;
   height: 30vh;
 
   @media (max-width: 1264px) {
@@ -70,10 +55,6 @@ header {
 }
 
 header h1 {
-  color: white;
-  font-size: 40px;
-  font-weight: 500;
-
   @media (max-width: 1264px) {
     font-size: 20px;
   }
@@ -87,181 +68,17 @@ header h1 {
   }
 }
 
-.top {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-input-container {
-  display: flex;
-  align-items: center;
-  height: 70px;
-
-  @media (max-width: 1264px) {
-    height: 50px
-  }
-
-  @media (max-width: 910px) {
-    height: 30px
-  }
-}
-
-.search-input {
-  outline: none;
-  border: none;
-  width: 686px;
-  height: 100%;
-  border-radius: 15px 0 0 15px;
-  font-size: 20px;
-  padding: 15px;
-
-  @media (max-width: 1264px) {
-    border-radius: 10px 0 0 10px;
-    font-size: 15px;
-    width: 500px;
-  }
-
-  @media (max-width: 910px) {
-    border-radius: 5px 0 0 5px;
-    font-size: 10px;
-    width: 400px;
-  }
-
-  @media (max-width: 706px) {
-    height: 20px;
-    width: 300px;
-  }
-}
-
-.search-input-icon-button {
-  border: none;
-  color: white;
-  width: 75px;
-  height: 100%;
-  font-size: 22px;
-  border-radius: 0 15px 15px 0;
-  background: #7536A2;
-  cursor: pointer;
-  transition: 0.3s;
-
-  @media (max-width: 1264px) {
-    border-radius: 0 10px 10px 0;
-    width: 50px;
-    font-size: 15px;
-  }
-
-  @media (max-width: 910px) {
-    border-radius: 0 5px 5px 0;
-    width: 30px;
-  }
-}
-
-.search-input-icon-button:hover {
-  transition: 0.2s;
-  background-color: #9f4adc;
-}
-
-section {
-  position: relative;
-  z-index: 1;
-}
-
-.absolute-card {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 50%);
-  margin-top: -50px;
-  z-index: 2;
-  width: 1161px;
-  height: 130px;
-  border-radius: 15px;
-  background: white;
-  box-shadow: 0 2px 13px 0 #7536A2;
-
-  @media (max-width: 1264px) {
-    height: 100px;
-    width: 800px;
-    padding: 10px;
-    top: 70%;
-  }
-
-  @media (max-width: 910px) {
-    height: 80px;
-    width: 600px;
-    top: 80%;
-    border-radius: 10px;
-  }
-
-  @media (max-width: 706px) {
-    flex-direction: column;
-    width: 200px;
-    height: 150px;
-    justify-content: center;
-    align-items: center;
-    top: 30%;
-  }
-}
-
-.title {
-  color: #9A9A9A;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.42px;
-
-  @media (max-width: 1264px) {
-    font-size: 10px;
-  }
-
-  @media (max-width: 706px) {
-    font-size: 7px;
-    text-align: center;
-  }
-}
-
-.content {
-  color: #000;
-  font-size: 25px;
-  font-weight: 500;
-  letter-spacing: 0.75px;
-
-  @media (max-width: 1264px) {
-    font-size: 15px;
-  }
-
-  @media (max-width: 910px) {
-    font-size: 10px;
-  }
-
-  @media (max-width: 706px) {
-    font-size: 7px;
-  }
-}
-
 .overlay {
-  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
 }
 
 .loading-spinner {
-  color: white;
-  font-size: 20px;
   letter-spacing: 0.5rem;
-  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000;
 }
 </style>
 
