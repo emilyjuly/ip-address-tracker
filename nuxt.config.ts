@@ -1,13 +1,12 @@
-
 export default defineNuxtConfig({
     modules: [
         'nuxt-primevue',
         'nuxt3-leaflet',
         '@pinia/nuxt',
     ],
-    primevue: {
-        /* Options */
-    },
+    css: [
+        '~/assets/css/main.css'
+    ],
     runtimeConfig: {
         public: {
             API_KEY_IP: process.env.API_KEY_IP,
