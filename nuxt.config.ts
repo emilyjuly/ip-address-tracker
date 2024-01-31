@@ -4,8 +4,10 @@ export default defineNuxtConfig({
         'nuxt3-leaflet',
         '@pinia/nuxt',
     ],
+    primevue: {},
     css: [
-        '~/assets/css/main.css'
+        '~/assets/css/main.css',
+        'primevue/resources/themes/lara-light-purple/theme.css'
     ],
     runtimeConfig: {
         public: {

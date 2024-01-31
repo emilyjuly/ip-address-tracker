@@ -10,6 +10,7 @@ export const useIpAddressStore = defineStore('ipAddress', {
         location: '',
         timezone: '',
         isp: '',
+        as: '',
         infoItems: [
             {title: 'IP ADDRESS', content: ''},
             {title: 'LOCATION', content: ''},
@@ -31,6 +32,7 @@ export const useIpAddressStore = defineStore('ipAddress', {
                     this.timezone = result.location.timezone;
                     this.isp = result.isp;
                     this.ip = result.ip;
+                    this.as = result.as;
 
                     this.infoItems[0].content = result.ip;
                     this.infoItems[1].content = `${result.location.region}, ${result.location.country}`;
