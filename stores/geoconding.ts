@@ -5,7 +5,7 @@ import type {AxiosResponse} from "axios";
 
 export const useGeocondingStore = defineStore('geoconding', {
     state: () => ({
-        location: [], moreInformations: {}
+        location: [], infos: ''
     }),
     actions: {
         async changeLocation(): Promise<void> {
@@ -15,8 +15,12 @@ export const useGeocondingStore = defineStore('geoconding', {
 
             try {
                 const result: AxiosResponse = await fetchGeocodingData(apiKey, ipStore.location);
-                this.moreInformations = result.features[0].properties
-
+                this.infos = [
+                    {oldName: result.features[0].properties.old_name},
+                    {country: `${result.features[0].properties.country} - ${(result.features[0].properties.country_code).toUpperCase()}`},
+                    {state: `${result.features[0].properties.state} - ${result.features[0].properties.state_code}`},
+                    {city: result.features[0].properties.city}
+                ]
                 if (result) {
                     const reverseLocation = (result.features[0].geometry.coordinates)
                     this.location.push(reverseLocation[1])
