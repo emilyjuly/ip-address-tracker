@@ -1,14 +1,13 @@
 <template>
-  <div v-if="!ipStore.isLoading"
-       class="absolute-card flex flex-column p-5 absolute z-2 bg-white border-round-xl">
-    <div class="flex justify-content-around">
-      <div v-for="(item, index) in ipStore.infoItems" :key="index" class="card-content">
-        <h1 class="title text-sm font-normal"> {{ item.title }} </h1>
-        <p class="content text-black font-normal text-2xl"> {{ item.content }} </p>
+  <div v-if="!ipStore.isLoading" class="absolute-card">
+    <div class="infos">
+      <div v-for="(item, index) in ipStore.infoItems" :key="index">
+        <h1 class="title"> {{ item.title }} </h1>
+        <p class="content"> {{ item.content }} </p>
       </div>
     </div>
-    <div class="flex justify-content-center">
-      <p class="underline cursor-pointer" @click="showDialog">Details</p>
+    <div class="details-container">
+      <p @click="showDialog">Details</p>
     </div>
   </div>
   <dialog-details :visible="dialog" @close="handleDialogClose"/>
@@ -27,72 +26,83 @@ function showDialog() {
 }
 
 function handleDialogClose() {
-  console.log('chamando')
   dialog.value = false
 }
 </script>
 
 <style scoped>
 .absolute-card {
-  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 30px;
+  position: absolute;
+  z-index: 2;
+  background-color: white;
+  border-radius: 15px;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, 50%);
-  margin-top: -50px;
   width: 1161px;
   height: 200px;
   box-shadow: 0 2px 13px 0 #7536A2;
 
   @media (max-width: 1264px) {
-    height: 100px;
-    width: 800px;
-    padding: 10px;
-    top: 70%;
-  }
-
-  @media (max-width: 910px) {
-    height: 80px;
-    width: 600px;
-    top: 80%;
-    border-radius: 10px;
-  }
-
-  @media (max-width: 706px) {
     flex-direction: column;
-    width: 200px;
-    height: 150px;
+    width: 250px;
+    height: 220px;
     justify-content: center;
     align-items: center;
-    top: 30%;
+    top: -30%;
+  }
+}
+
+.infos {
+  display: flex;
+  max-height: 100%;
+  width: 100%;
+  justify-content: space-around;
+
+  @media (max-width: 1264px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 
 .title {
+  font-size: 13px;
   color: #9A9A9A;
   letter-spacing: 0.42px;
 
   @media (max-width: 1264px) {
-    font-size: 10px;
-  }
-
-  @media (max-width: 706px) {
     font-size: 7px;
     text-align: center;
   }
 }
 
 .content {
+  font-size: 20px;
   letter-spacing: 0.75px;
 
   @media (max-width: 1264px) {
-    font-size: 15px;
-  }
-
-  @media (max-width: 910px) {
     font-size: 10px;
   }
+}
 
-  @media (max-width: 706px) {
+.details-container {
+  display: flex;
+  justify-content: center;
+}
+
+.details-container p {
+  text-decoration: underline;
+  cursor: pointer;
+
+  @media (max-width: 1264px) {
     font-size: 7px;
+    letter-spacing: 1px;
   }
 }
 </style>

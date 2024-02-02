@@ -1,16 +1,12 @@
 <template>
-  <header class="bg-cover bg-no-repeat relative">
-    <div class="flex flex-column align-items-center	justify-content-center">
-      <div class="header">
-        <h1 class="text-white font-medium text-3xl">IP Address Tracker</h1>
-      </div>
-      <InputSearch/>
-    </div>
+  <header>
+    <h1>IP Address Tracker</h1>
+    <InputSearch/>
   </header>
   <section v-if="!ipStore.isLoading" class="relative z-1">
     <LeafletMap/>
   </section>
-  <div v-if="ipStore.isLoading" class="overlay fixed h-full w-full">
+  <div v-if="ipStore.isLoading" class="overlay">
     <span class="loading-spinner text-white text-md fixed">Loading...</span>
   </div>
 </template>
@@ -38,6 +34,12 @@ onMounted(async () => {
 
 <style scoped>
 header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
   background-image: url('../assets/images/bg-image.png');
   height: 30vh;
 
@@ -55,6 +57,10 @@ header {
 }
 
 header h1 {
+  color: white;
+  font-size: 35px;
+  letter-spacing: 1px;
+  font-weight: 300;
   @media (max-width: 1264px) {
     font-size: 20px;
   }
@@ -69,6 +75,9 @@ header h1 {
 }
 
 .overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.5);
